@@ -2,6 +2,9 @@
 
 OGD4All is a prototype system enabling an easy-to-use, transparent interaction with Geospatial Open Government Data through natural language. It was developed and tested with 430 tabular and geospatial datasets of the city of Zurich.
 
+> [!NOTE]
+> OGD4All has been submitted to and accepted at IEEE CAI 2026. Check out our [preprint](https://arxiv.org/abs/2602.00012)!
+
 ## 💡 Architecture
 <img width="2948" height="869" alt="highLevelOverview" src="https://github.com/user-attachments/assets/828f68c2-470b-4c59-b80f-8b371cac0d29" />
 
@@ -78,6 +81,20 @@ This will start a local gradio server where you can interact with 430 geospatial
 
 ```
 SUPPORTED_LLMS = ['gpt-5', 'gpt-5-mini', 'gpt-5-nano', 'gpt-4.1', 'gpt-4.1-mini', 'gpt-4o', 'gpt-o1', 'gpt-o3-mini-preview', 'gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-2.5-flash-lite-preview-06-17', 'meta-llama-70B-instruct-latest', 'mistral-codestral', 'mistral-large', 'openai/gpt-oss-120b', 'meta-llama/llama-4-maverick']
+```
+
+## Citation
+```
+@article{siebenmann_ogd4all_2025,
+  archivePrefix = {arXiv},
+  arxivId = {2602.00012},
+  author = {Siebenmann, Michael and S{\'a}nchez-Vaquerizo, Javier Argota and Arisona, Stefan and Samp, Krystian and Gisler, Luis and Helbing, Dirk},
+  journal = {arXiv preprint arXiv:2602.00012},
+  month = {nov},
+  title = {{OGD4All: A Framework for Accessible Interaction with Geospatial Open Government Data Based on Large Language Models}},
+  url = {https://arxiv.org/abs/2602.00012},
+  year = {2025}
+}
 ```
 
 ## Acknowledgement
