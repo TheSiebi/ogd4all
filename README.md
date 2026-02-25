@@ -19,6 +19,8 @@ https://github.com/user-attachments/assets/b3b6c24a-a1f7-4d31-b16a-a9a23a658f77
 
 </summary>
 
+> **NOTE**: If you only care about the benchmark, ignore the subsequent steps and instead load it directly via [this](https://huggingface.co/datasets/michael7ma/ogd4all-benchmark) HuggingFace dataset.
+
 ### 1. Code Environment Setup
 Run the following commands with Python 3.12 to create a virtual environment that contains all required dependencies:
 ```bash
@@ -38,7 +40,7 @@ AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_ENDPOINT_EMBEDDING_LAR
 ### 2. Obtaining Zurich OGD
 The system was tested with 430 tabular and geospatial datasets of the city of Zurich, but could also be used with other types of data (with some additional steps).
 While the associated metadata is already contained in this repository, you need to perform some additional steps for getting the actual data.
-1. Download the datasets [here](https://drive.google.com/file/d/1MdqwSZW0i__oRXNFUJAqlwYcFqypGpia/view?usp=sharing). Unfortunately, Zurich's open data platform does not offer an API for downloading datasets, meaning these datasets were manually exported. Note that this was performed in March and May of 2025, meaning some datasets may be out-of-date. All extraction timestamp, dataset titles and filenames are listed in `data\opendata\50000006\downloads.csv`, feel free to replace datasets with more recent versions.
+1. Download the datasets [here](https://drive.google.com/file/d/1MdqwSZW0i__oRXNFUJAqlwYcFqypGpia/view?usp=sharing). These datasets were manually exported. Note that this was performed in March and May of 2025, meaning some datasets may be out-of-date. All extraction timestamp, dataset titles and filenames are listed in `data\opendata\50000006\downloads.csv`, feel free to replace datasets with more recent versions.
 2. Extract the ZIP folder into the directory `data\opendata\50000006\extracted` (make sure it is not further nested).
 3. If you added the data correctly, you should see the following messages at startup:
 ```
@@ -98,4 +100,4 @@ SUPPORTED_LLMS = ['gpt-5', 'gpt-5-mini', 'gpt-5-nano', 'gpt-4.1', 'gpt-4.1-mini'
 ```
 
 ## Acknowledgement
-This prototype was implemented as part of Michael Siebenmann's Master's thesis at the Professorship of Computational Social Science and was further supported by the Esri R&D Center Zurich.
+This prototype was implemented as part of Michael Siebenmann's Master's thesis at the Professorship of Computational Social Science and Esri R&D Center Zurich.
