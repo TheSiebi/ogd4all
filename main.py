@@ -298,8 +298,105 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
     
     # Define custom CSS that will make the elements span full viewport height.
     custom_css = """
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@800&display=swap');
+
     .full-height {
         height: 80vh;
+    }
+
+    /* ── Default: centered layout (no class needed — avoids load flash) ── */
+    #chat-col-inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-top: 12vh;
+    }
+
+    /* Chatbot shrinks to content by default (shows examples, hides empty space) */
+    #main-chatbot {
+        flex: 0 0 auto !important;
+        min-height: 0 !important;
+        transition: flex 0.4s ease;
+    }
+
+    /* ChatInterface wrapper: narrower by default (targets the non-chatbot child) */
+    #chat-col-inner > div:not(#main-chatbot) {
+        max-width: 780px;
+        width: 75%;
+        margin: 0 auto;
+        transition: max-width 0.4s ease, width 0.4s ease, margin 0.4s ease;
+    }
+
+    /* ── Active state: input at bottom, full layout ───────────── */
+    #chat-col-inner.chat-active {
+        justify-content: flex-start !important;
+        padding-top: 0 !important;
+    }
+
+    #chat-col-inner.chat-active #main-chatbot {
+        flex: 1 1 auto !important;
+        min-height: unset !important;
+    }
+
+    #chat-col-inner.chat-active > div:not(#main-chatbot) {
+        max-width: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    @media (max-width: 768px) {
+        #chat-col-inner {
+            padding-top: 5vh;
+        }
+        #chat-col-inner > div:not(#main-chatbot) {
+            width: 90% !important;
+        }
+        #chat-col-inner.chat-active > div:not(#main-chatbot) {
+            width: 100% !important;
+        }
+    }
+
+    /* ── Title: large mono in centered mode, compact h1 in active mode ── */
+    .title-big {
+        overflow: hidden;
+        max-height: 160px;
+        opacity: 1;
+        transition: max-height 0.4s ease, opacity 0.3s ease;
+        text-align: center;
+        padding: 0.5rem 0 0.8rem;
+    }
+
+    .title-big-name {
+        font-family: 'JetBrains Mono', 'Courier New', monospace;
+        font-size: 3.8rem;
+        font-weight: 900;
+        letter-spacing: 0.06em;
+        line-height: 1;
+    }
+
+    .title-big-sub {
+        margin-top: 0.45em;
+        font-size: 0.92rem;
+        color: #999;
+        letter-spacing: 0.01em;
+    }
+
+    .title-small {
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        transition: max-height 0.4s ease, opacity 0.3s ease;
+        text-align: center;
+    }
+
+    body.chat-active .title-big {
+        max-height: 0;
+        opacity: 0;
+    }
+
+    body.chat-active .title-small {
+        max-height: 80px;
+        opacity: 1;
     }
 
     /* Map panel: propagate height through Gradio's wrapper divs */
@@ -424,14 +521,39 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
     map_js_head = """
     <script>
     (function() {
-        function init() {
+        // Map column show/hide
+        function initMap() {
             const el = document.getElementById('map-col');
-            if (!el) { setTimeout(init, 300); return; }
+            if (!el) { setTimeout(initMap, 300); return; }
             new MutationObserver(function() {
                 el.classList.toggle('map-active', !!el.querySelector('iframe'));
             }).observe(el, { childList: true, subtree: true });
         }
-        setTimeout(init, 500);
+        setTimeout(initMap, 500);
+
+        // Centered input: CSS defaults to centered; JS adds chat-active when messages exist
+        function initChatCenter() {
+            const chatCol = document.getElementById('chat-col-inner');
+            if (!chatCol) { setTimeout(initChatCenter, 300); return; }
+
+            function setActive(active) {
+                chatCol.classList.toggle('chat-active', active);
+                document.body.classList.toggle('chat-active', active);
+            }
+
+            function checkState() {
+                const chatbot = document.getElementById('main-chatbot');
+                if (!chatbot) return;
+                // Gradio 4.x wraps messages in [role="log"]
+                const log = chatbot.querySelector('[role="log"]');
+                const hasMsgs = log ? log.children.length > 0 : false;
+                setActive(hasMsgs);
+            }
+
+            // Observe the stable column — survives Gradio's DOM rebuilds on clear/reset
+            new MutationObserver(checkState).observe(chatCol, { childList: true, subtree: true });
+        }
+        setTimeout(initChatCenter, 300);
     })();
     </script>
     """
@@ -441,10 +563,20 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
         ogd4all.map_component = map
         with gr.Row(scale=1):
             with gr.Column(scale=1):
-                gr.HTML("<center><h1><b>OGD4All</b>: Accessible Retrieval & Analysis of Geospatial Open Government Data</h1></center>")
+                gr.HTML("""
+                <div id="title-area">
+                    <div class="title-big">
+                        <div class="title-big-name">OGD4ALL</div>
+                        <div class="title-big-sub">Accessible Retrieval &amp; Analysis of Geospatial Open Government Data</div>
+                    </div>
+                    <div class="title-small">
+                        <h1><b>OGD4All</b>: Accessible Retrieval &amp; Analysis of Geospatial Open Government Data</h1>
+                    </div>
+                </div>
+                """)
         with gr.Row(elem_classes="full-height", scale=4):
-            with gr.Column(scale=1, elem_classes="full-height"):
-                chatbot = gr.Chatbot(scale=1, show_label=False)
+            with gr.Column(scale=1, elem_classes="full-height", elem_id="chat-col-inner"):
+                chatbot = gr.Chatbot(scale=1, show_label=False, elem_id="main-chatbot")
 
                 def clear_all():
                     ogd4all.reset = True # reset analyzer state
@@ -469,7 +601,7 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
                 map.render()
         with gr.Row(scale=1):
             gr.HTML("""<p style="text-align:center; color:#b0b8c1; font-size:0.8rem; margin:0.4rem 0 0.2rem 0;">
-                OGD4All hat Zugriff auf 430 tabellarische und geografische Datensätze der Stadt Zürich.
+                OGD4All hat Zugriff auf 430 tabellarische und geografische Datensätze der Stadt Zürich (Datenstand: März-Mai 2025).
             </p>""")
 
     demo.launch(theme=gr.themes.Soft(font=[gr.themes.GoogleFont("Roboto"), "Arial", "sans-serif"]), css=custom_css, head=map_js_head)
