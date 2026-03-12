@@ -360,8 +360,46 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
     """
 
 
+    map_placeholder = """
+    <style>
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            background: #ffffff;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .map-placeholder svg { opacity: 0.25; }
+        .map-placeholder span { font-size: 15px; color: #bbb; letter-spacing: 0.01em; }
+        @media (prefers-color-scheme: dark) {
+            .map-placeholder {
+                background: rgba(255,255,255,0.06);
+                border-color: rgba(255,255,255,0.1);
+            }
+            .map-placeholder svg { opacity: 0.3; stroke: #aaa; }
+            .map-placeholder span { color: #666; }
+        }
+    </style>
+    <div class="map-placeholder">
+        <!-- Map icon -->
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 4L3 7v13l6-3 6 3 6-3V4l-6 3-6-3z" stroke="#555" stroke-width="1.5" stroke-linejoin="round"/>
+            <line x1="9" y1="4" x2="9" y2="17" stroke="#555" stroke-width="1.5"/>
+            <line x1="15" y1="7" x2="15" y2="20" stroke="#555" stroke-width="1.5"/>
+        </svg>
+        <span>OGD4All automatically generates interactive maps when relevant</span>
+    </div>
+    """
+
     with gr.Blocks(title="OGD4All", fill_height=True) as demo:
-        map = gr.HTML(render=False, elem_classes="map-panel")
+        map = gr.HTML(value=map_placeholder, render=False, elem_classes="map-panel")
         ogd4all.map_component = map
         with gr.Row(scale=1):
             with gr.Column(scale=1):
@@ -372,7 +410,7 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
 
                 def clear_all():
                     ogd4all.reset = True # reset analyzer state
-                    return gr.update(value=None) # remove map
+                    return gr.update(value=map_placeholder) # restore placeholder
 
                 chatbot.clear(fn=clear_all, inputs=[], outputs=[map])
 
