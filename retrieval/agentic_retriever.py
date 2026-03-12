@@ -14,7 +14,7 @@ from langgraph.prebuilt import ToolNode, tools_condition, InjectedState
 from langgraph.types import Command
 
 from langchain_community.cache import SQLiteCache
-from langchain.globals import set_llm_cache
+from langchain_core.globals import set_llm_cache
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage, AIMessage
 from langchain_core.tools import tool
 from langchain_core.tools.base import InjectedToolCallId
@@ -124,7 +124,7 @@ class AgenticRetriever(Retriever):
             reasoning_tokens = response.usage_metadata["output_token_details"].get("reasoning", 0)
             self.total_reasoning_tokens += reasoning_tokens
             # Gemini models do not add reasoning tokens to the output tokens, although they are charged at this rate, so let's fix that
-            if hasattr(self.llm_with_tools, "model") and "gemini" in self.llm_with_tools.model:
+            if hasattr(self.llm_with_tools, "model") and self.llm_with_tools.model and "gemini" in self.llm_with_tools.model:
                 self.total_output_tokens += reasoning_tokens
         return {"messages": [response]}
 

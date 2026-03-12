@@ -22,18 +22,11 @@ https://github.com/user-attachments/assets/b3b6c24a-a1f7-4d31-b16a-a9a23a658f77
 > **NOTE**: If you only care about the benchmark, ignore the subsequent steps and instead load it directly via [this](https://huggingface.co/datasets/michael7ma/ogd4all-benchmark) HuggingFace dataset.
 
 ### 1. Code Environment Setup
-Run the following commands with Python 3.12 to create a virtual environment that contains all required dependencies:
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run:
 ```bash
-python -m venv .venv # Create new virtual environment named .venv (or whatever you wanna call it)
-
-# activate virtual environment depending on your platform #
-.venv\Scripts\activate.bat # Windows, cmd.exe
-.venv\Scripts\Activate.ps1 # Windows, Powershell
-source .venv/bin/activate  # Linux/MacOS
-# ------------------------------------------------------- #
-
-pip install -r requirements.txt
+uv sync
 ```
+This creates a `.venv` with all pinned dependencies automatically.
 Configure the following environment variables:
 AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_ENDPOINT_EMBEDDING_LARGE
 
@@ -63,7 +56,7 @@ If your desired model is not listed in `SUPPORTED_LLMS` in `utils.py`, just add 
   
 ## 🗺️ Usage
 ```
-python main.py
+uv run python main.py
 ```
 This will start a local gradio server where you can interact with 430 geospatial and tabular datasets of the city of Zurich through a simple interface.
 

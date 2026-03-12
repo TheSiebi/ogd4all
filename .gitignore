@@ -5,3 +5,5 @@ data/opendata/*/raw/
 !data/opendata/*/downloads.csv
 cache/.langchain.db
 .gradio/certificate.pem
+.claude/
+data/logs/

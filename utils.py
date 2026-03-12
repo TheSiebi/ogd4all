@@ -10,7 +10,7 @@ import pymupdf4llm
 import structlog;log=structlog.get_logger()
 from langchain_openai import AzureChatOpenAI, ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_azure_ai.chat_models import AzureAIChatCompletionsModel
+from langchain_azure_ai.chat_models.inference import AzureAIChatCompletionsModel
 from langchain_ollama import ChatOllama
 from azure.core.credentials import AzureKeyCredential
 from typing import Tuple, List, Optional

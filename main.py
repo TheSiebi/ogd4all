@@ -6,7 +6,6 @@ import sys
 import logging
 import structlog;log=structlog.get_logger()
 import folium
-import gradio_folium
 from langchain_core.messages import HumanMessage
 from pydantic import BaseModel, Field
 import copy
@@ -259,16 +258,11 @@ class OGD4All():
                         new_map = item
                         out.pop(i)
                         produced_new_map = True
-                    if isinstance(item, gradio_folium.Folium):
-                        new_map = item.value
-                        out.pop(i)
-                        produced_new_map = True
 
                 if produced_new_map and self.map_component is not None:
                     copied_map = copy.deepcopy(new_map)
                     folium.LayerControl().add_to(copied_map)
-                    updated_map = gradio_folium.Folium(value=copied_map, height=720)
-                    self.map_component.value = copied_map
+                    updated_map = gr.update(value=copied_map._repr_html_())
 
                 if self.reset:
                     yield [thought_msg_retrieval, thought_msg_coding_init] + out, updated_map
@@ -310,15 +304,15 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
     """
 
 
-    with gr.Blocks(title="OGD4All", theme=gr.themes.Soft(font=[gr.themes.GoogleFont("Roboto"), "Arial", "sans-serif"]), css=custom_css, fill_height=True) as demo:
-        map = gradio_folium.Folium(render=False, elem_classes="full-height")
+    with gr.Blocks(title="OGD4All", fill_height=True) as demo:
+        map = gr.HTML(render=False, elem_classes="full-height")
         ogd4all.map_component = map
         with gr.Row(scale=1):
             with gr.Column(scale=1):
                 gr.HTML("<center><h1><b>OGD4All</b>: Accessible Retrieval & Analysis of Geospatial Open Government Data</h1></center>")
         with gr.Row(elem_classes="full-height", scale=4):
             with gr.Column(scale=1, elem_classes="full-height"):
-                chatbot = gr.Chatbot(scale=1, type="messages")
+                chatbot = gr.Chatbot(scale=1)
 
                 def clear_all():
                     ogd4all.reset = True # reset analyzer state
@@ -328,8 +322,6 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
 
                 gr.ChatInterface(
                     fn=ogd4all.chat_fn,
-                    type="messages",
-                    theme="ocean",
                     multimodal=False, # we manually handle multimodal input
                     textbox=gr.MultimodalTextbox(file_types=["image", ".pdf"], placeholder="Type a question...", file_count='multiple'),
                     examples=[
@@ -344,7 +336,7 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
             with gr.Column(scale=1, elem_classes="full-height"):
                 map.render()
 
-    demo.launch()
+    demo.launch(theme=gr.themes.Soft(font=[gr.themes.GoogleFont("Roboto"), "Arial", "sans-serif"]), css=custom_css)
 
 
 if __name__ == "__main__":
