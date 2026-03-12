@@ -368,7 +368,7 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
                 gr.HTML("<center><h1><b>OGD4All</b>: Accessible Retrieval & Analysis of Geospatial Open Government Data</h1></center>")
         with gr.Row(elem_classes="full-height", scale=4):
             with gr.Column(scale=1, elem_classes="full-height"):
-                chatbot = gr.Chatbot(scale=1)
+                chatbot = gr.Chatbot(scale=1, show_label=False)
 
                 def clear_all():
                     ogd4all.reset = True # reset analyzer state
