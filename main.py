@@ -301,11 +301,67 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
     .full-height {
         height: 80vh;
     }
+
+    /* Map panel: propagate height through Gradio's wrapper divs */
+    .map-panel {
+        height: 80vh;
+    }
+
+    .map-panel .prose,
+    .map-panel > div {
+        height: 100% !important;
+        max-height: 100% !important;
+    }
+
+    /* Override folium's padding-bottom aspect-ratio trick */
+    .map-panel div[style*="padding-bottom"] {
+        padding-bottom: 0 !important;
+        height: 100% !important;
+    }
+
+    /* Hide folium's Jupyter notebook trust fallback message */
+    .map-panel div[style*="padding-bottom"] > span {
+        display: none;
+    }
+
+    .map-panel iframe {
+        height: 100% !important;
+        position: relative !important;
+    }
+
+    @media (max-width: 768px) {
+        /* Allow the page to scroll instead of being clipped to viewport */
+        html, body {
+            height: auto !important;
+            overflow-y: auto !important;
+        }
+
+        .gradio-container,
+        .gradio-container > .main,
+        .gradio-container > .main > .wrap {
+            height: auto !important;
+            min-height: 100vh;
+            overflow-y: visible !important;
+            overflow-x: hidden !important;
+        }
+
+        /* Remove fixed height from row/columns so stacked layout flows naturally */
+        .full-height {
+            height: auto !important;
+            min-height: unset !important;
+        }
+
+        /* Map panel: fixed height that contributes to (scrollable) page length */
+        .map-panel {
+            height: 50vh;
+            min-height: 300px;
+        }
+    }
     """
 
 
     with gr.Blocks(title="OGD4All", fill_height=True) as demo:
-        map = gr.HTML(render=False, elem_classes="full-height")
+        map = gr.HTML(render=False, elem_classes="map-panel")
         ogd4all.map_component = map
         with gr.Row(scale=1):
             with gr.Column(scale=1):
