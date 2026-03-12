@@ -455,7 +455,7 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
                 gr.ChatInterface(
                     fn=ogd4all.chat_fn,
                     multimodal=False, # we manually handle multimodal input
-                    textbox=gr.MultimodalTextbox(file_types=["image", ".pdf"], placeholder="Type a question...", file_count='multiple'),
+                    textbox=gr.MultimodalTextbox(file_types=["image", ".pdf"], placeholder="Frag mich etwas über die offenen Daten der Stadt Zürich...", file_count='multiple'),
                     examples=[
                         "Wo plant die Stadt Zürich, neue Bäume zu pflanzen?",
                         "Welche Hundefreilaufzone ist am nächsten zum Kunsthaus Zürich?",
@@ -467,6 +467,10 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
                 )
             with gr.Column(scale=1, elem_classes="full-height", elem_id="map-col"):
                 map.render()
+        with gr.Row(scale=1):
+            gr.HTML("""<p style="text-align:center; color:#b0b8c1; font-size:0.8rem; margin:0.4rem 0 0.2rem 0;">
+                OGD4All hat Zugriff auf 430 tabellarische und geografische Datensätze der Stadt Zürich.
+            </p>""")
 
     demo.launch(theme=gr.themes.Soft(font=[gr.themes.GoogleFont("Roboto"), "Arial", "sans-serif"]), css=custom_css, head=map_js_head)
 
