@@ -357,6 +357,29 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
             min-height: 300px;
         }
     }
+
+    /* Dynamic split layout: map column hidden until a real map is available */
+    @media (min-width: 769px) {
+        #map-col {
+            flex: 0 0 0% !important;
+            width: 0 !important;
+            max-width: 0 !important;
+            min-width: 0 !important;
+            overflow: hidden !important;
+            opacity: 0;
+            transition: flex-basis 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.4s ease 0.1s;
+        }
+        #map-col.map-active {
+            flex: 1 1 50% !important;
+            width: auto !important;
+            max-width: 50% !important;
+            min-width: 0 !important;
+            overflow: visible !important;
+            opacity: 1;
+        }
+    }
     """
 
 
@@ -398,6 +421,21 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
     </div>
     """
 
+    map_js_head = """
+    <script>
+    (function() {
+        function init() {
+            const el = document.getElementById('map-col');
+            if (!el) { setTimeout(init, 300); return; }
+            new MutationObserver(function() {
+                el.classList.toggle('map-active', !!el.querySelector('iframe'));
+            }).observe(el, { childList: true, subtree: true });
+        }
+        setTimeout(init, 500);
+    })();
+    </script>
+    """
+
     with gr.Blocks(title="OGD4All", fill_height=True) as demo:
         map = gr.HTML(value=map_placeholder, render=False, elem_classes="map-panel")
         ogd4all.map_component = map
@@ -427,10 +465,10 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
                     chatbot=chatbot,
                     additional_outputs=[map],
                 )
-            with gr.Column(scale=1, elem_classes="full-height"):
+            with gr.Column(scale=1, elem_classes="full-height", elem_id="map-col"):
                 map.render()
 
-    demo.launch(theme=gr.themes.Soft(font=[gr.themes.GoogleFont("Roboto"), "Arial", "sans-serif"]), css=custom_css)
+    demo.launch(theme=gr.themes.Soft(font=[gr.themes.GoogleFont("Roboto"), "Arial", "sans-serif"]), css=custom_css, head=map_js_head)
 
 
 if __name__ == "__main__":
