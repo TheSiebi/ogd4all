@@ -256,7 +256,7 @@ class IterativeLocalAnalyzer(Analyzer):
             import contextily as cx
 
             # Initialize an interactive folium map
-            m = folium.Map(zoom_start=13, control_scale=True, location=[47.3769, 8.5417], zoom_control="bottomleft", min_zoom=12)
+            m = folium.Map(zoom_start=13, control_scale=True, location=[47.3769, 8.5417], zoom_control="bottomleft", min_zoom=12, attributionControl=False)
             # Add base layers
             folium.TileLayer('Esri.WorldImagery', name='Satellite', control=True).add_to(m)
             folium.TileLayer('cartodb positron', name='CartoDB Positron', control=True).add_to(m)

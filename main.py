@@ -601,7 +601,7 @@ def start_frontend(retriever: Retriever, analyzer_type: str, coding_llm, retriev
                 map.render()
         with gr.Row(scale=1):
             gr.HTML("""<p style="text-align:center; color:#b0b8c1; font-size:0.8rem; margin:0.4rem 0 0.2rem 0;">
-                OGD4All hat Zugriff auf 430 tabellarische und geografische Datensätze der Stadt Zürich (Datenstand: März-Mai 2025).
+                OGD4All hat Zugriff auf 430 tabellarische und geografische Datensätze der Stadt Zürich (Datenstand: März-Mai 2025). | © OpenStreetMap contributors, Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community, © OpenStreetMap contributors © CARTO
             </p>""")
 
     demo.launch(theme=gr.themes.Soft(font=[gr.themes.GoogleFont("Roboto"), "Arial", "sans-serif"]), css=custom_css, head=map_js_head)
