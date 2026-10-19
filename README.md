@@ -3,7 +3,7 @@
 OGD4All is a prototype system enabling an easy-to-use, transparent interaction with Geospatial Open Government Data through natural language. It was developed and tested with 430 tabular and geospatial datasets of the city of Zurich.
 
 > [!NOTE]
-> OGD4All has been submitted to and accepted at IEEE CAI 2026. Check out our [preprint](https://arxiv.org/abs/2602.00012)!
+> OGD4All was presented at IEEE CAI 2026. Check out our [paper]([https://arxiv.org/abs/2602.00012](https://ieeexplore.ieee.org/abstract/document/11536530))!
 
 ## Architecture
 <img width="2948" height="869" alt="highLevelOverview" src="https://github.com/user-attachments/assets/828f68c2-470b-4c59-b80f-8b371cac0d29" />
@@ -83,16 +83,16 @@ SUPPORTED_LLMS = ['gpt-5', 'gpt-5-mini', 'gpt-5-nano', 'gpt-4.1', 'gpt-4.1-mini'
 
 ## Citation
 ```
-@article{siebenmann_ogd4all_2025,
-  archivePrefix = {arXiv},
-  arxivId = {2602.00012},
-  author = {Siebenmann, Michael and S{\'a}nchez-Vaquerizo, Javier Argota and Arisona, Stefan and Samp, Krystian and Gisler, Luis and Helbing, Dirk},
-  journal = {arXiv preprint arXiv:2602.00012},
-  month = {nov},
-  title = {{OGD4All: A Framework for Accessible Interaction with Geospatial Open Government Data Based on Large Language Models}},
-  url = {https://arxiv.org/abs/2602.00012},
-  year = {2025}
-}
+@INPROCEEDINGS{11536530,
+  author={Siebenmann, Michael and Sánchez-Vaquerizo, Javier Argota and Arisona, Stefan and Samp, Krystian and Gisler, Luis and Helbing, Dirk},
+  booktitle={2026 IEEE Conference on Artificial Intelligence (CAI)}, 
+  title={OGD4All: A Framework for Accessible Interaction with Geospatial Open Government Data Based on Large Language Models}, 
+  year={2026},
+  volume={},
+  number={},
+  pages={882-888},
+  keywords={Modeling;Large language models;Codes;Generative Pre-trained transformer;Manuals;Cognition;Cognitive systems;Tools;Artificial intelligence;Python},
+  doi={10.1109/CAI68641.2026.11536530}}
 ```
 
 ## Acknowledgement
