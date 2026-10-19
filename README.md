@@ -3,7 +3,7 @@
 OGD4All is a prototype system enabling an easy-to-use, transparent interaction with Geospatial Open Government Data through natural language. It was developed and tested with 430 tabular and geospatial datasets of the city of Zurich.
 
 > [!NOTE]
-> OGD4All was presented at IEEE CAI 2026. Check out our [paper]([https://arxiv.org/abs/2602.00012](https://ieeexplore.ieee.org/abstract/document/11536530))!
+> OGD4All was presented at IEEE CAI 2026. Check out our [paper](https://ieeexplore.ieee.org/abstract/document/11536530)!
 
 ## Architecture
 <img width="2948" height="869" alt="highLevelOverview" src="https://github.com/user-attachments/assets/828f68c2-470b-4c59-b80f-8b371cac0d29" />
